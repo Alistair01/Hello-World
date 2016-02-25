@@ -1,0 +1,287 @@
+<html>
+<head>
+<title>Barloworld Transport: IT Service Desk and Support</title>
+<HTA:APPLICATION
+  APPLICATIONNAME="IT Service Desk"
+  ID="ITServiceDesk"
+  VERSION="1.0"
+  BORDER="dialog"
+  INNERBORDER="no"
+  MAXIMIZEBUTTON="no"
+  MINIMIZEBUTTON="no"
+  SCROLL="no"
+  ICON="https://dashboards.bwtrans.co.za:344/download.ico"/>
+  
+</HTML> 
+<Script Language="VBScript">
+Sub Screen_Onload()
+Dim width,height
+width=500
+height=800
+Screen.ResizeTo width,height
+Window.MoveTo (screen.availWidth)/2,(screen.availHeight)/2
+End Sub
+
+   </SCRIPT>
+   
+
+</HTML>
+<script language="VBScript">
+
+
+Sub Window_OnLoad()
+Dim width,height
+width=500
+height=800
+Window.ResizeTo width,height
+Window.MoveTo (screen.Width-500)/2,(screen.Height-800)/2
+End Sub
+
+
+Sub OnClickButtonCancel()
+window.Close
+End Sub
+
+</script>
+
+			<!--Add your controls here-->
+			<script type="text/javascript">
+       
+			function computername()
+			{
+			var wshShell = new ActiveXObject("WScript.Shell");
+			var computername = wshShell.ExpandEnvironmentStrings("%COMPUTERNAME%");
+			return computername
+			}
+
+			function username()
+			{
+			var wshshell=new ActiveXObject("wscript.shell");
+			var username=wshshell.ExpandEnvironmentStrings("%username%");
+			return username
+			}
+
+			function ipAddress() {
+				var ipAddress = "";
+				var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+				e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
+					for(; !e.atEnd(); e.moveNext()) {
+						var s = e.item(); 
+						ipAddress = s.IPAddress(0);
+					}
+				return ipAddress		
+			}
+
+
+			function macAddress() {
+				var macAddress = "";
+				var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+				e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
+					for(; !e.atEnd(); e.moveNext()) {
+						var s = e.item(); 
+						macAddress = s.MACAddress;
+					}
+				return macAddress		
+			}
+
+			
+			/* 
+			Here's how to get MotherBoard Serial Number.
+			function serialNumber() {
+				var serialNumber = "";
+				var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+				e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_BaseBoard"));
+					for(; !e.atEnd(); e.moveNext()) {
+						var s = e.item(); 
+						serialNumber = s.SerialNumber;
+					}
+				return serialNumber		
+			} */
+			
+			
+			/* Here's how to get computer Serial Number 
+			   This is the javascript version of cmd = wmic bios get serial number 
+			*/
+			function serialNumber() {
+				var serialNumber = "";
+				var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+				e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_BIOS"));
+					for(; !e.atEnd(); e.moveNext()) {
+						var s = e.item(); 
+						serialNumber = s.SerialNumber;
+					}
+				return serialNumber		
+			} 
+			
+
+			/* Global variables */
+			var cname = computername();
+			var uname = username();
+			var ip = ipAddress();
+			var mac = macAddress();
+			var serial = serialNumber();
+            
+
+			function Send() {
+					var email = 'spice@bwtrans.co.za';
+					var subject = 'Ticket for: ' + uname;
+					var body = '-------------------Service Desk Questionnaire-----------------' + '\n\n' +
+					       	'Affected user (if different from the details in this form): ' + '\n\n' +
+							   'Contact number/s: ' + '\n\n' +
+							   'Problem description: ' + '\n\n' +
+							   'When did the problem occur: ' + '\n\n' +
+							   'Any specific application: ' + '\n\n' +
+							   'Single or multiple users effected: ' + '\n\n' +
+							   'Particular site or department effected: ' + '\n\n' +
+							   '--------------------Sending Workstation Information--------------------' + '\n' +
+							   'User Name: ' + uname +'\n' + 
+					           'Computer Name: ' + cname +'\n'+ 'IP address: ' + ip + '\n' + 
+							   'MAC address: ' + mac + '\n' + 'PC Serial#: ' + serial + '\n' + 'RoutingRef=EUS' + '\n\n' ;							 
+							   location.href = 'mailto:' + email
+						+ '?subject=' + encodeURIComponent(subject)
+						+ '&body=' + encodeURIComponent(body);
+				}
+	</script>
+
+			<!--Add your controls here-->
+			<script type="text/javascript">
+			
+			function Sendmaxfd() {
+					var email = 'spice@bwtrans.co.za';
+					var subject = 'Fuel Delete request for: ' + 'Maxfd';
+					var body = '*******Please note that responses to this request will be sent back to this sending email address from the ticketing system*******' + '\n\n\n' +
+					       	
+							   'Refuel order Number: ' + '\n\n' +
+							   'Truck Fleet Number: ' + '\n\n' +
+							   '--------------------Sending Workstation Information--------------------' + '\n' +
+							   'User Name: ' + uname +'\n' + 
+					           'Computer Name: ' + cname +'\n'+ 'IP address: ' + ip + '\n' + 
+							   'MAC address: ' + mac + '\n' + 'PC Serial#: ' + serial + '\n' + 'RoutingRef=MAXFD' + '\n\n' ;							 
+							   location.href = 'mailto:' + email
+						+ '?subject=' + encodeURIComponent(subject)
+						+ '&body=' + encodeURIComponent(body);
+				}	
+				
+	         function Sendmaxcd() {
+					var email = 'spice@bwtrans.co.za';
+					var subject = 'Cargo Delete request for: ' + 'Maxcd';
+					var body = '*******Please note that responses to this request will be sent back to this sending email address from the ticketing system*******' + '\n\n' +
+					       	'*******All trip legs attached to the trip need to be deleted prior to requesting the delete*******: ' + '\n\n' +
+							   'Max ID: ' + '\n\n' +
+							   'Fleet No: ' + '\n\n' +
+							   '--------------------Sending Workstation Information--------------------' + '\n' +
+							   'User Name: ' + uname +'\n' + 
+					           'Computer Name: ' + cname +'\n'+ 'IP address: ' + ip + '\n' + 
+							   'MAC address: ' + mac + '\n' + 'PC Serial#: ' + serial + '\n' + 'RoutingRef=MAXCD' + '\n\n' ;							 
+							   location.href = 'mailto:' + email
+						+ '?subject=' + encodeURIComponent(subject)
+						+ '&body=' + encodeURIComponent(body);
+				}				
+				
+				
+				
+            function openURLPortal()  {
+                    var shell = new ActiveXObject("WScript.Shell");
+                        shell.run("http://servicedesk.bwtrans.co.za/Portal");
+                }
+            function openURLMaxPwdReset()  {
+                    var shell = new ActiveXObject("WScript.Shell");
+                        shell.run("https://max.bwtrans.co.za");
+                }   
+		    function opendocumentportal()  {
+                    var shell = new ActiveXObject("WScript.Shell");
+                        shell.run("http://documents.bwtrans.co.za/");
+                }   
+            function openurlITSURVEY()  {
+                    var shell = new ActiveXObject("WScript.Shell");
+                        shell.run("https://bwts-my.sharepoint.com/personal/barnold_bwtrans_co_za/_layouts/15/guestaccess.aspx?guestaccesstoken=g%2fh7hFeJP5W7L%2bdXaCNhIMU0QdI%2f3KmJSNewRmp2AQ0%3d&docid=1_13884b2f20b584d708086aa884bfafaa5&wdFormId=%7B3222BF40%2D44C6%2D4482%2D9D43%2DF3D65F55B85C%7D");
+                }       
+ </script>
+                
+<html>
+ <body>
+
+     <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwP/2wBDAQEBAQEBAQEBAQECAgECAgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwP/wAARCAA1ANIDAREAAhEBAxEB/8QAHQAAAgMAAwEBAAAAAAAAAAAAAAkHCAoEBQYLAf/EADwQAAAGAgEDAwIEAQgLAAAAAAIDBAUGBwEICQAREgoTFBUhFhcYIjEaIyQ3QXd4tjI4OUJEUVaXs7jX/8QAHAEBAAICAwEAAAAAAAAAAAAAAAEDAgcFBggE/8QAOxEAAgEDBAEBBQQIBAcAAAAAAQIDAAQRBQYSITETByIyQXEUFVFhIzNScoGhscFCgpHwJCZiY6LR8f/aAAwDAQACEQMRAD8A3pTSaRKuYjJZ9PpKyQ2Ewxjc5NLJXJHJKzx+OR9mSGr3Z5eXRcaSjQNzeiIGaaaYMIAADnOc9ZKrOyoikuTgAfOlY59nPUR3NtHL5RW/Gs2FVtSLGpUtizayaxtI6WBYWSfcIOV1JApUTiPwmNrBBH8R0fky1yUl4CcFGgzgORejfZr7F7bWIIta3Q7fYj2sKkry/eYdkfu4+pFa63vv632si21siy6m/gHPFf8AqbHn8h86qJWlA7G7OpXGd39cl7WlJ3V+To0CGw7FtZcyV/FzhKzFklnScZZMbaBmGFBCjQJSUqYJOBGiyEPgEPoJINmbRkSDTtDsYowhIISIvK3WEj5Es5/abJOeh3WiNc3PuzccSwW+r3UYHUhQFEU/iSo9xf3iD5z+cpwiGyPW6Uo0rDec4ikqQEKjvwzVNvgVvClWBYWQ3toWuMykbiPDj2wMsOECsZnlgPsC++MczcnRNxWR+07YtJbMke9cWvFAMZLcnjAHH5++oH7QrWU0249HvTJBui+W4AziG6LOTnpeKyEnl8sI37pp+2ve4ezFS0k1XJte3KJVSrmZjDfKFLF9DtuONBZgChuD8iwlY22ZZLAA8z4ydAncTSEh5wDFOcAKH5o3b7PNla7uO62/sS4EG441y0Qf1LWRsZ4o2XaH5DkztGGZVITthv3ae/t6aHt2217fEH2jb0jYWXhwukXOOTrhFl+Z4qiyFVZgX6BcTC5pFLFijBOYNIGuVRCUtiZ4j8hZlRaxtdG5WDyJUJjy89v49wjALATCjAiAMIRhEHHnjUdOvtJvrrTdStXgv4XKOjjDKw8gj+YPgjBBIINegNP1Cy1WyttS026SaxmQMjqcqyn5g/yIPYOQQCCK9P18dfZWWb1Qm5u1GnNV6gvWrl4zOknWdWdZjPMF0OwyZOkDW0Q1nXtiJf8AW2d3L9lEtPGYD2wgF5Cz3znH26VbEoYnIpE002a9Q3rhplR3JW97wHSnXu3lURHHUitZX0xe2scvMcPw2mncAkdUIEGUTooajCDfgLVgihCDgQgYF5hjurQIixXj3W1TiZ3Sk2/2g1G7QTyPtcXnkuRSpgnjcxFKk8cNllfy99hL28x4haeqVJWV9UMPzSiBmmiS+/kn3DPb8xTVDrxYgeKgt+9QNw+xyTGxRw3VhJzimWHoFaxnhVsv8eSK0x5iY8o+TskAcI/4lHF5DkYVIi8du/l26U9N/wBmmhU3ddR7C15H7ao6xohataykgZ7DNIO9on9hcMEjySpICsQmmBIXIjw5KUJjcAUJzQ5AaAA8ZDhWJBBwR3S6bh5z+KKiZ89VlYm5VfkTOMuqpjkrbE2Kf2KkjzshNyQvbnd9r2ISdgSLW9QERagrKrJpBoBAMCEQc4wrIRufC1nU9XBYMNtmkeMe0a6fkkpgNiDvKbQqSoAKSkT/ABaTwymXlheUha0hKsLTuTYsKOAE0sszAR4wIIc98dQathGC4Pn/AO1pz4zpVGINxVaRzGaSJjiMSjOm1IvUjk8mdULFH2FoQVmxKFzo8PDmelb21vRkAyM044wBYA475zjHU1U/xt9aiNo57OIZ7nJVfId4qtC9KFxTandXBtnTRBj1px+EwCy7IdokigHs5NFj+kZcsJvHPf3O336U9N/2avjee3Gses8Niti39etZ1LApy4pmmHTKayluaI1JnJa0qX5EkZXk03KBwNWsqM1WT7YxYNTliGDOQ4znpWIUnoDuvPyveLUCDUVDdnZhsfUUc17sNY2N8GuJ2mTUkgMrXPIHQ1rRscgMOwiXqVxbIsyAABZFnCYz7fsF2UCsTgDuiObx6fy+hJXtJGNj6ifddYMuXNkxuZtmTUpr6NOLYpbEa9C8SIB2USJUlVPSQsQBiwLyUl47fvD3VPFs8cd16Ok9tNZtj4DJ7Uom9KztOtYU5OLRLp5EJU2OcTjTkztCOQOyV6fgnAbm4bWxuBCtRk0wISU5oRjzgOe/SoKkHBHdUJWc93EKgm44AfvHVongtYNvMd0zbO1sEAsAo+MIsVko4ifAPYwZjv8AIw5ZTeP7vc7ffpWXpv8As02Fgk0clcfapbF5AySSKvzYle2OTMDqheI+8sy0gKpG7tTy3nqG5wbFaUeDCjyTBlGF5wIIs4z36VhSnLD57uIqr5i6QWU7r12c+sbisano+Jx+xZ/HGxc3nDTrSlEwgsMkUUMCmOLEEYyVhoA5Dnvn7dKzEbnvjWXz1fclYpnZOhMwi7kQ8xmV68W1JY67psGYTOrE+v1fujQ5J8HFlHYIXN6os0GBhCLxFjvjGft1Bq6Hw31raLq5MojXuiOtE2nsoj0KhsZ1Xo51kcrljy3R6NsLYnqyKZPcHh7dlCRtbURPfHkacYAGO+Pv9+pqhviP1rJv6krlE0J2+0xiND6z7GxS5LOj+ycEnDqzw9ol6hoIi7DD7KZ3V0JmCyOo4g4ATOD6kAECZccYbg3yBgQQiziDV0SMrZI6xWI3pV9a1vVscoMpnN3Q7imp6RK2uAxcMUnW0yppViJFM5e+ASv0ErFwNSm+Z0bh7Ecmel6YfcpU5rUnmHA28Pl3zaei+vqWjRzofUun5AfhErFSf87Bh9F+YY1xhlCpMwGQoOf4Dx/7/wBKlzid4+WW7daAJ1TR7be+g+htr07o3drXoZAABRh7ywrmE5GYVG2JoCaMBxhwcnrMZL8ixBELHrzce7YNlwabbIT+iiDFV44K4wFwwPvM2BgA4Xsg+K8rT6bf7t3Nql0hRf03BT2wGOyW/DCglvAJ6BHmp2XSHlmpWycac1GlrKcR6PPv4cQWSwnvwY69LCG441KGxbAk8mbF7Q6iZyjVBqA0wQTBAOCWarEmH4UGP2a67YrvPV4J4pJIQ4icLzRcgZihVWDDlgBgPBBIXkM8lBBfaUv3HaakTMs5RypPFnIJxzAXA456LDBHecV3V7xrlXqeY17bl8oajppkiy1ufGS76vYwyCFt7yJSnC2MdmSlh/Fcvx9fW+KP5CxManDg3OQC8x4z1bte/wDZZr1lqu39Dnub+aYMr2k7GOUqAeTQxyemmEHeFIJx34rru8LHc2gz6Zr93bLaCHBW6RQ6BmIC+o0fNuRP7WQM9eaYrVHIrZ8hQSGMbgUBH5EzywkglhLZmZQ5s0grhS1+2Y7xp7VhcW+0YsrVAOMDgCjDgHKoWcgHnGQY17q/si0qB7W+2FueWC7t2PqcnAZLgNni6ji1tIBgdrwwo8ea5bTfavqEouLLeu3Yri0uFHDCEh4CPiRjyW4jJyem5gsfPirg63zKr6VutBXFHPUbdtdLbbGdyUMUYdcmt9JXVI0al0Zm78OKjhq4hGbPZUmCQJsdyi34nBeQJzThAM6DvDTda3FtqXV9y2s0W79PkdQ8i4a8s4yFdvUAAlktnOS3kwHkC6rkd42jqWjaBuSPStuXUMm079FYrG3VpeOCyr6ZOYo7hBgL4EwwQjNgte60VW76xm+sZ/qX0V/vgt3/ACEw9DV8HlvpSeU/EHyp7F8XdTbEo9pYzaGqUPp5XeVa6tyC1bKRqILEI4zvS5WVHIk6RoFakyVrZUqzCcsK8H7TBFlHhEZnGYrPmgYjHdaD+BvmEpGd8e9xMVuwKv8AWuP8dtcsLnLj6ya3VDXb3UDygkCpllzFH1y17fE06dHthXkuaHKlYc5OykpQSMRiwRJSq5EPIYOc1n3f3Ck9r9dtrHXjr4OYETr3UEKnzlYe5F6W6/L7mhSlsji6Vqp41OS2VN6cqwGRpCF5xHG5xfS8YEUUoIySfgoxVnYK8pO/wq5fpuLJm8c47OaVIxSV1bSK+qNRZcJwmVHF/hqbudC3VhdImgGB4LROKsUIahjGDARCGiLFnvnHQVEo96Oq++mN47NP98F24CnbKo0lwpqzjtKtcKaXeQyplbmU2fDsdRJHkv8ACr2xLVD4fiKpCylBhwskA9zIMYEZkXSpldl48TVxfVkVbDqO184tqarxEqbYFVSW6q9hbcucFjssb4tEIPS7EwolLo4Gnr3E5K2ISixHnjGabkPkMWRZznI1jCclyfNQrzTXjYUQ4ReFyho64OLZALro6EyeyS0ZhpCaTgqOoKzUROKuhhQw/La8vM0E5jSmeRRqltTmZxnJIeypQfpJD86kvYThx0egnp4Yvt5HYfhNs81a9UxsU43diTv5q6WP9jr4cskUFdGc5zNi5kUNbZia1tyQlEUanUJ0xuDMm+8I58qgO3q8T4zUFa+sNh7q+l82lhklNc5U56H7BHTulli3Jy1W2QGv2eFTySRlEoMEI3KCNQuw5QSmL75CnRmFJwhCWUXjCpPuzD8xS85ZsI+bWcafEzxwRB7LVz9NuBdcPUs+BDFhuTyKcRqO0qrcyCu4jkgvz7d/aF274Kbh4D/D7Kyxxd2+WK4Md2RkGuvFNyT8dcpeRoJpneunWDLF7mQhUNrQ5ylPbZiUkQvMCEl91va8H9sds/UC++f3dPxpjLo3yxTENvWewNKPTS6K09GsukUUbx3AotO+VSM81IpfozNWGU2nG4k5GJvbyY2PcbaIwBUQZnPvJ2vJI+5YhgyrFcNKx/Cp+rbhx0fkPp13Xb9ziYT9o1et872ZT3mGTvwV7PIowofXprrxKzgdARcERIaGQDGsRmIxmmqRnKMjCo9sRaoLt6vHPu5qPeIXZe4DOA/mIrUuVPSdm16r+VKakcgLFPzYe2XJW0gOlcXYVeTMibmxK5tKheQSTkGEyh2OGDx88dnyqXA9WM/ia6r00/GJpHvlTW3sg2vpZHbLhEJ3Bq7hglknmUcBEGJzhK15c1DDiHyCPjIeFyxWDupMyaMsCYsJfhj3MGKSuyleJrmerphzHXc44+q+jBSgiNwXWuz4dHiFao5cqJY4w714yNJSlaoEI9YoLQIS8DNHnIzBYyLOe+c9DSE5DH864fqQb4sdo0w4kdc2t0cW+rJRqhGLgmDMlPUEN00lcOruq2CHpHssoYSnJJFSXhYpJIMwIAVKws7OPcKKEEaRAcnPzzX7y3cW+mGlvDPqVdNL18nW3rYU818xOr4cpE/vcjmqWw6gnEzkxCROc6CjDVGXF6TpzEaZEhJwSmTkh8xiwMwxRHZpCCeu6yRdKur0W6FyOd58keyl2PKoa1dPLynspLPNEZ2AiWyNaJnTFeePMCdvagkEEh7dglFhxj7Y69BW1vHpvtKtdPT9XZWUMS5+RRFDH+LZP5muvaYWutKikcDlMhY/R2Lf0NOjg2315wxNXbdD7BkzS1oIq0trA2qnALfFBGmJPhZdhJFows67xVn++aJV5EA74CaHJeft6+hsNOvLcG4tEcuoJbiOXgeGxyHjrHf4d154G04HfVLgnjJHdvkIzMVw2eBRTgZB44wSe++qdzpTcbhBJnGUjVat2bU7QPdkOURqrUhGY7NNZFPhCA4uQ2haqxwbwtTjWLC5qFaxQ84AoXm4b8CAcUA4Zwtc7209L2yumvbO00zbItw09+eJnVOXUFsqnkJmAChThBzxxcgLVOjRNG8P3XbNLfxNlIMs0cshGVedj1x97lwHvdEsYxlgwzZa9NymCxh0c/TMFkSZdX7zJbb17suoogqq+wIikRGPMkW0q8J48znPEdiLai95T8hwIf25Nn5OSzBFCBnpmztuez+601dxWlgbOzW6RLW+t7qUXEMhISNbpS7cXlZsDCNC7e5kBga4vd+v75gvX0K4uhd3LW7Nc2c9ujQSxgF3a3PFQUjVc/EsqKC5yVIq3moEu1EX6gWA/IIhJhVwzSElkc4xOsqHpLHBSpC0vDKih7jlJ2KNWmOacSk1F5Ky3LuMQh4wScZ0/ftl7QE9oOjWrajANXkh5rJBhDJ6RZXMy574hW4h/cMfQAJZR2bYd7sNthazcCwmOkxz8Hjny4T1ArIIWx1yLLyKe+JOyThWNB4UhaIIpN2drSbFuCFns1BBn6JHNzo8Cm8IPUmOIi3LDsgbnhCrYMgQrm/zLNMSqSizwjBjBPfaeqSzasV2XrGmlJJLJpklDKnozAcfd4MyEP76PggMpK4PvY1jpUcOlE7x0jUecSXqwvEVZvWhJ5HPJVcFPcdMglWAYEe7WptsXEuja3uabOcp3FEkXEZFjtnJKsgtQVnOP7M5AZjrw1NE0E0sL/GjFT9QcGva8UizRRyofcZQR9CMis+3qBuLnZPk8rvWaLa4OlWtjnUU/nsmlQrQlD5GUpzdJYu2M7cFnNZIpKjFaoKtGPJoTAEhCDtnAhZ+2K6+iNwhOaS228H3qHDKSbNVRby1bGtbk0Y/AQaybLxsFFEEkGMAYQfF1CSP0mifHKPHpzhlnIzFJhR5QhFmYEDOcdRVnqRZzx7pqGpPpz4lQ3HRt7qPObs+v3ZulHo83WBbsVjhyaKwQdfLsP8AWMfiEddFhbo9xyPyjJqxyNVHJFDxhUMvwSgAVgKsGlyytjoUqmsOCHnq1rqS6tY6H2v1pbNervLkSCx4gVLXvLHNkkqjQIbIlwW+VUU/PUScH+LElI1Ym9YSaIskv+cEIsA8O6zMkZIJByKYhxKcLm3mkOqfJpStxPNKrZdt3TxcDqk6DzOSPbIjegVjcMP85etc4QxKWhB9VnaLPuJyFg/ZCaLw7hCEc1i8isUI+VS76e3iV2k4vM7S52SdqjdPzkT0wVEfytlj/J/ZFAS7GC+/WfrkPinw8GZlSX4/t+/7nYzy8PHHkqJXD8cV3/qDuKjZvlAYNVmzW51qhsU0w+285S/Noyp+jBRyectUDRMuGUTHEpUJaYA6NKPfwZgjAA5B45F5Z8VInCcs1I+xPDAi3A4ndXtIrZlbLBdgdZqpq5JArUjhKiUxqNWpCYAlh8gRnEqSGJzkFdy5Ng5IsCEKRT4ewqAHBycBYlQJMOWHg0gxTwX8/wBNKajegkz2dponSyJv6Y9oQHWi5OURTNjW6Dd2kAWhHWCG0XxgaHPOFjcwr1QG9KqCX4YK9ooZcVb6kWeQB5VrA0k40aZ0t0RHoyxrFU1jcrjM7Q3BMnZCQicLNldpM5zNPZIsaij1KdtSK240CFCiwabhI2pE5AjTRAEaOaoZyzcqzEcZ3po9wtW9+teb+vyT0G+UxRs5eZz7cMm8sd5i7Osej8gJrNUWyOdfsreAZcqOblqrAl38xgkXjkzOMYFFXPKpUgeTXXchnplNw9lN+dhbypmV0Az0TeVsp7CwCTTOVs00ZSZklY1lmizHm2v3dsGtKkpzqpRhCu8VOBl5EIrIhYCosoCgHORWoHkA4zqf3w0jxpm8L1Fft0Pb4eppSaNSApwU1jLq6ZhsUMdgNGTkRDszhZTjm1wQ+6T8luVnALMKN9s0uaqVyrcqyjFcGHqAGOlHLj8ZNnKZHpQ7yI1Usbi7SckkONblj5iQri8tR1XKLUQRpa+Zy4qo8nUibTlohiEEfmMY4q31Is8sHlT4a04WCdYeHrZnQKj5UxzW+di67nI5raswLUROOS22JcxImNGIZSFNInKOQSNNbcnQoCfFaeAkoZ5nkceb0qv1MyK58A1w/T+cYOyHGLVeyEM2Oc6uc3e2LNiMvi46wk75JkRTUxw76CtA7HPcVipiVYJd9ywFlnBEX98ixn7dTSRw5GKr/wCoM4cttOT+yNdJZre8U22NdVVzZMVkwLRmEijCs10lj9GnJrG1FMkLlRapIBO0m4OEYMkQBZDjARYznOFZRuqA5q2G/PC5G+QXQ7WSgplM0FZ7F6v1jB2Su7UakB0njSKRtlexqJzmKPjcMTM4Ptey9XHSBCMLymWpjkiZUWHOQGJjlYrJxZjjo1nosH09fOpMqYjOq0o22pCydba3eW52ryuJBctimxFgVsiVzQMaxib3emj3xoIaUD0rJSpMqhJkpR4iywYBgOMRVoljB5Y7qs38k65QP+q9TP8AuvPf/kHSp9ZPzrNnyJ1A+64b9XhXT2jPRqotZ0pZC/eDkIjiGp/XIEyjAhYx54NTEF5wL/eDnv8Awz16D3XP6G/tv7ijH/C6lZwupHglkVv6nH8K6ps6b1NFtrcn9LA0kDj8GiZlx/IH+NOe4p5K4zGUZjjpG2C0WdAxJ5R+V9iAYV1ePRTC6NWHpOpTvpfnH3ETQoNOy6IFSI1KWDyP+QnwYQL0pb3K3m3hK95JbzBeIljzzQkEDAGeXeMoQQc9YbBGqvaMh0q90+5sLSMySTYkxlZHz2P0gK4XAIGc9g+Owdk+pmsmvXF1ENotzUWX1+hUnibXJ6oJdXwtvVp6rkLc2ylnqtrE7umCHuVmPpBgwG/GTHYSCKTlFG5wMQvP+69c172p3+1NiBo4rxLh0uOKM+JoyUadsAlYgp6HIjllmZeq5Szmtdq2Ws7tu43kiW1QxZZI/VDgME+QMpIAYkZABChsmu238dWS2NXNXd4xSAuirqcoqGMsphD+3lJhQ2/Iue3zKKid3xImwExE0GnKUa0oCVWQHJ4u+AZMD19vsttptD3vvH2dNb/eO3I5vUfKHPq2cgaKTihPlwqsp5KSF+eK6Z7S7uPWNmbU32kv2DcEsfpqAw/V3SMsqcmA7CcirDiQC3dd5bNgMeOL6uET60rKyMjCZJW0hj8UCWiLbrVrJIJoYk7uJ5bREOUIcsMX1Y1WSI0SovKPKM1Rg4swVW3dNuF9tGsz21wt4spa4SSXJza3B5OU4NlZl5+kqkAKfU9RUKkCdw38D+x/R7aa3a1eMLA0cOBi5gXigfmuGhPAyswJJAj4M3IGqZRibRagUNLxmuHQyyrAeY+CG23Wj1HVY3ZxnMgegNMW+a4BJGyAVRaMyYLWibjl6lwG1lY94oHiAQtj3mm3u6ptx3esw/ZNJim9a1uUkAVYY05S8RnniWSP1HkCKgkPuscnGurLUbLa8W3rXR5Td6nJF6V1bvGeTTO3GPJA4Zjjk9NULs/Ae8o6zqXYWstjYmVlJwEJLQ0tzWUEHfwCW3oyUgMA8s5F44CVjt3z37deIrudrq6ublvikkZj9WJP969pWsItra3t1+GNFUf5QB/aqbbdy3kKjLjBQaP01rFarWsRSAdjKNhLcnlYrGReQe0YjJMWIhsDmRbwmXJzVolY1Ak4iBFFYBgeBiyH56+leP8AiJpUFG8hPM7sLZ+zlR19p7oECW6lWazVNbApBstcja0myt9iDZNkIomtS1M4nvLThldisGHHEoxhP8ge3nx8ulZlUAB5Hun606vtd0q6CON6x6FxO4Vkbbj7GjVdPzpKIMySsZXd0b4rIXpsZXZ4Zk532JPUJE5ow/fIMdKqqSelKOlKOlKOlKOlKOlKOlKOlKOlKOlKrJq9tXX+2bHbkirpoljS2U7sJbWt79mXN6BtVOc1ph5Tx6WujQmQOjpkUcPeDDAIjTxEqDiy/MZJflgPSpI44zVm+lRR0pR0pR0pR0pR0pXz5fVx8Y0iSTxn31rFgOXRiaFtzJZIm1IIWI7PWpHhMkWLfZD4gRzJoRgGWYP+K5MfjOfIwvAt37flXe2xxoSP/wAz6KTLbjPclvnkQv4mJiQR8kZSPBx1FD9wbilL+7pWpOCG+Ud0Bgg/gJlUEfi4YeSKy4aUbAvddyuPvTG+CYJGxuBQka35ClKe3q++ScnAGnPTndvvnAgeXYeP2iwIOchzur2a7nt9RsRZXwXJHCRG+R8EEH86x3xo0eraXOOD81HJeGOWV7wMg+MddV9BerVMs5J9Y0DDZq9ony1XGUbJDpK0v+GMyFS9bhvLUSlak99j+SgJQGqQKAYKUKzwhAUUEQDTsdV6j91+zbX01LSUNvA7+pMoQuJowD+jQ4YgluPHJVV7LYIWvPcP3rvGxu9Kv29aeHMUJdlVon5DDyLlQwC55YDMSAFGCaZNrnx2tamqHms9qW4VjQhtAysdXQFfYkzlUehLPHGYxg/EDRhQ/hRIn+RAKKX/AM2mJE2nGmkFZEDuMzUO7/atLFrcGrbHm+yXz8muJRbxRvKzMG9Nzw5MidqcsRIAGPfjZO1/ZlFcaPLpu84ftNtGQsEfryukYAIMiqH4ozZBGFynag482Bg2pEfsHUuLa97OweOuRLK7Kz/o8eWmJUSBPE5a7BqlxQrGw4IinJhhCdrKCARigBAifa7jADHXUtU3zc6bvi+3Rs/UZU9VAOTjJJkjQ3CkMO1eb1G8LnPLAJrtWl7Ogvtn2O3t02KMYnJwpxjg7iBgVPxLDwXstgDBJxUPNTDANn9wAJmZC3PUD1AeECx3kEfCdiOuFuYbkidmirg8F/EzJJJD0LckUKyzPmFJQkEAGZjIyg9dmmu9T2T7PnNzM8esbgjIWN8eotryJeUJ36ccxZgnwFuTEDomuqQWunbz38gt4Uk0jQXBaRM+m91gBYy/XqPEFUvnmF4qCewKaZ1o+t2UdKUi7io/17edL/HLW/8A68wvpVj/AAx/T+9VN1R1Nm/IPf3I4l2Z2H2OHrZrlyUXvG6QqWuLvsCvS102AdEJO7PM0kUfeE8idIfAG1Q1t0UjZKlOyNgjnI8SYwxSHIFSxChMAZIq0/IVD+J1DdT1I+QLdqcxeZyZtjuYrQyjdS3K2ZoE3NrGkbE7tA6LpSZxh4SHSA4gbgpc1qNaapVnDEA0JWAlhVC88e6v8qolrxtQ/S3i05uoTWmydm3XWuoudgo/qhsa9TOVKLgBUb3r832NCm5VYq4tnmrm+1k+uK1Agd1OS3HJScruPsWXnEVkVHOPI7Pmrf0XxYNG2+qdQX5tLsZta77cW7ScCn7VatebJ3JW7JQLrKIS0vEPYadriJTBqgyNtgqRSkAqOdETmtf3AlQsXHmDVZCCaxL8SQAONUrle2uzF48QnHfcl1zy8W+oFewbtWPJldetJMjbrhHSFSSW2qvzOMK69JHN4zEJtNoayGzJxYgAXJ0ao/JXgWYIPUVlgB2AAzjqmzae0BozA6es/YnQC759Y1fTin5WygOQbaW7fVZFuKVuy+lvqNhn1gzRPELIQGpgFnHl4ROJBRoyjQB8u2JrAliQGHf0pcvFXoOq5AeO7WjYHfm99nrQlUrrVMip+PxfZG6qwZ6ugUeXuUfjcwOHBJoxuU+uWdjbxvzvJJAe5ni+YnRkFkp0mADis3bixCgVzILyA37oHqXy81Naszf9jLT4xJ5D4nrpY9oLAuc1s2DbOsjIr1gQ2o6kgIOlL7FZFIvhui8WQHr0SbGM5CLHnmacQzIfAb/Zq2ddcLUVmtWsE12m2h3RsHdWTx1FIZpsfFtp7grlwgdiOyILgtRU9XsMlTXVURhUOdFIkzW2jZVKcaYgODwjwMQcKxMnfugcaX/cm6W0ivhb5GojZNkOzpuLx3bLsGsz/cUNcHOBPVsEwu9aYc67sNaqiilsUM7jZkAkhCR7JRmFgUCypyLGMHiBhWQUeouPhIptNO8WcUJilkTG9L+2usTYTZyCR5u2DsNs2PtOCJELqXK2GxjmekI9C39kbKUi0af2gDU1EsYE6kMfCJGoOPCeoEYrAt30BgVRTgs00rKPqNlbvQTnYhRJ6n5Dd4arj0eeNibaea3eY+xy9VEkbxO63XScyGTycHti8Ryp9dEahzVOAQKzDcngAIMCspGPQwPArSr1NVUdKUdKUdKUdKUdKV4K0KvgF019LartKLNM1r+csytglEZek+FDe6NiwHiMseMZCaQoJHgJpB5QgHpzwANLGAwARY+7TNTvtHv7XU9MuWhvoW5I6+Qf6EEdEHIYEgggkV815Z21/bS2l3EHt3GCD/qCD5BBwQRgggEHIr5zPLD6XXZvWycyC+dAGZ92BpxStUvCmvGYBa24YUSIwakSI6NEBJHO25KD9hatqAYsMwHuckBn94tyaduzR9Yu4tWt5o9M3L16sbHjazn5tG56iY+eDkDPwufA+KyF5Yr9iv8ANxZeFlH6wD5CVf8AER49RPI8qPmtLT3k5uTSiZlRKyWSTRFaxOBQHyDTpteI4oIUpDMljLVtLsU3rkJ5Ygix2EWHIRY/5463rYbq07WLEafuK3KOVwHGGHfzVxkEf1rW26PZmt7d/fG3LpIr3OSpOFc/mOiDWqSJ+pZoO1a7zW6+Hy5dJZGz4ZBs8Be3TL0tMUFhKKLZz4wsTyX5JhmMY8SBe4ZjOQC8sCzjPVYvZPoUeqR6xZ7ktxEj8x6yKwHz7DgoR9R15HYriry+9oUemy6XcbUkkynDnFLxz8shgQw/17HR6NX9oTHJdu03sbMjaJrpBqoW2koFsksFMtSXTM2A8sWD0kKhrycY/t5jgkUYwW4vIESZOHPmUWs8cFdcRruueyXZktxe2tnBru7mfkuABbROPDOygKcEfDHknwSnmuKsNn+03cKQWOpa1JpG3EXi0ccheeRfmuTnGc+SevwOMU96mqbr2g67j9XVgxFsETjpAwklZNMVuLm4KR5Pc35/dD8iWPMgeVghHq1Z4hGHGizn7BwEOPOW4NwarufVrrWtaujLfzHs+FUDpURR0iIOlUdAVvHQdB0vbWl2ujaPbCKxiHQySWJ7Z3Y9s7HJZick1KPXDVzFHSlJc4yq+nsP3V5o5DLYPL4swWDudX0ggT5I408sjPOGFLQ0QbFT3EHNyRpkUlaEzkQNOYpRjOJAeAReRYFjOOlZsRxj+n9697xXQiawt/5OjZjEJREiphyobNzSImSZgdWIuVQ54jtWFNMsjY3RIlC9xl0NRnBTL03upTxFDwAYshF2UfHuY/ZFLF0RtmruPWxdyI1uxrNsU57xWTtzd9jJbrh2pttX6r2ZrKXSdQspnFT2rAYTK28lmaYnklsAxKlrUS1KCxYMAXkRmQRWbAsF4kccV5uuq+2YmOqHqR3yyNcrNrSw9jXKw5jWdUqIy5PUheGKV6iMiGDxuOqGFGsaZ1LkbaFI3O5TEa4p00hAqRANMGV3Epkcou+hWjnT9qdGHUrVxjfG1wZXtm10pJqeGd2RqG50aXRurSMo3Btcm9WWSrQuCFWSMo4k0ATCjAZCLGM4zjqaqb4j9aS9xrbENfHxxga0t2zlMbOsf4ruHalodSolrdbNir6+KU7AWxKGd3syKxCMu0yisdlLQtJE2rBtppCv3QZxnABYHlVjDk7YI/2KivW+PR60ORbZfajSCgLS160of9H5/ENiJHMqil2vVd7K7MGvOXODyivKimrVF3ZfIIZDwKi3WTBZ0YD/AHxEDyMw3Jqh86k/CoY5bNeH4ceSVs1L4z9WKs2ypzYtCWgqZLJNfrIp+g7XvqC3fVkmcnV9irC1vVVRaTlxW1IWauMYXNjegt+cYSJ1ZJxxCnyLUdMu2CKkaH8eV773ajctloW7E3rXW4+T+dRSZ0PW1kEFJZfUUH1qZGJFqt+aqJGNSKPSaQvkawvekAfdNbUizABYEcEZYVRzClAPAq0lccyzbC6lZIhtFqRu7CN0IlH2+NTTXqHasW5ZQrAsRsREt6pxqGzYZGXKpJPCZi5l/KbnE56SEkpj8e/kPhkQlQU76YcfrVBLb012dYeGHkRntq1W+Gbd79bMxza+Z0ZXyBfPpHXbdJL5pYqGVUWljJDia+vNfVtFSzXU1IWMsk7KjAs5CQIzKpyOagHoCtYabGcJyMZxnGcElYzjOO2cZwAOM4zjP3xnGelVUgHjCupp1pu/bvRi4q7veKXPYXIltXcFaOo6JtN0qadVVbjsOxohO2+4meLL63amU1nSGkHZcXJIMtdgCfGBGmBBiKscZAYEYwK0CdTVdHSlHSlHSlHSlHSlHSlHSlVmvr9G/dP+qD9M3f4+Pifn1+Vnf4vcXj8f8wv+H8u/bx/b379ffa/enE/YftHDP+DnjP8Alp1n866eh/0MfUM/pi/Sd9V9ozy/If8AJ/6h7Pjn3e/5ff0n2vD/AEv7O38esrv734D7d9p9L/uc8f8Al1TurY9cdSjpSjpSjpSjpSjpSjpSjpSjpSjpSo/tn+quzP7v5n/lxy6VI8ilvcFn+yE4/P8ADrE//O49Kyk/WP8AWmw9Kwo6Uo6Uo6Uo6Uo6Uo6Uo6Uo6Uo6Uo6Ur//Z);" width="190" height="50" alt="Barloworld Transport">     
+				
+	
+			<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+			<strong>User Name: </strong><script type="text/javascript"> document.write(uname);</script><br>
+			<strong>Computer Name: </strong><script type="text/javascript"> document.write(cname);</script><br />
+			<strong>IP address: </strong><script type="text/javascript"> document.write(ip);</script><br />
+			<strong>MAC address: </strong><script type="text/javascript"> document.write(mac);</script><br />
+			<strong>PC Serial#: </strong><script type="text/javascript"> document.write(serial);</script>
+			
+
+
+			<p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+			*The information above may be required by support staff in resolving your ticket. Please use the relevant options below to log a ticket with support.
+			<hr>
+			<center>
+			IT Service Desk #: (033) 395-7444 <br>
+			</center>
+	    
+			</center>
+</body>
+</html>
+ 
+
+ </script>
+<html>
+
+               <p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+               <input type="button" Style="width: 220px" name="MaxPassword" id="openurl" onclick="openURLMaxPwdReset()" value="Max Password Reset">
+               
+             </right>
+               <a href="" target="_blank">MAX Password Reset Doc</a>
+
+</body>
+</html>
+</end>
+
+				
+ </script>
+<html>
+                       </center>
+                <input type="button" style="width: 220px" name="Sendmaxcd" id="Send" value="Max Cargo Delete" onclick="Sendmaxcd()">  
+
+              </right>
+               <a href="" target="_blank">Clear Broswer Cokkies </a>
+
+           </center>
+ </script>
+<html>
+               			</center>
+			     <input type="button" style="width: 220px" name="Sendmaxfd" id="send" onclick="Sendmaxfd()" value="Max Fuel Delete">
+			     
+			   </right>
+			    <a href="" target="_blank">How to Find Max ID/Trip</a>
+ </script>
+<html>
+               			</center>
+			     
+				<input type="button" style="width: 220px" name="Document Portal" id="OpenUrl" onclick="opendocumentportal()" value="Document Portal">
+
+</script>
+<html>
+                </center>
+                <input type="button" style="width: 220px" name="portal" id="openURL" onclick="openURLPortal()" value="Self Service Portal">
+ </script>
+<html>
+                </center>
+                <input type="button" style="width: 220px" name="IT Survey" id="openurlITSURVEY" onclick="openurlITSURVEY()" value="IT Survey">
+
+ </script>
+<html>
+                </center>
+                <input type="button" style="width: 220px" name="Send" id="Send" onclick="Send()" value="Log Support Ticket - Email">                
+              
+
+ </script>
+<html>
+              
+            <p style="margin-top: 110; margin-bottom: 0">&nbsp;</p>
+            <input type="button" style="width: 120px" name="Close" id="Cancel" onclick="OnClickButtonCancel()" value="Close">
+</body>
+<html>
+   
+         
